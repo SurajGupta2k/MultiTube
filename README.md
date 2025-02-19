@@ -1,6 +1,6 @@
 # MultiTube - Watch Multiple YouTube Videos Simultaneously
 
-![MultiTube Logo](/public/logo.svg)
+![MultiTube Logo](/public/logo192.png)
 
 MultiTube is a React-based web application that solves a common limitation in web browsers - the inability to play multiple YouTube videos with audio simultaneously. While most browsers and devices restrict multiple video playback with audio, MultiTube overcomes this limitation, allowing users to watch and listen to multiple YouTube videos at the same time.
 
