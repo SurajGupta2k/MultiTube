@@ -1,13 +1,489 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply m-0 font-sans antialiased bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+  }
+}
+
+@layer components {
+  .video-player-mode {
+    @apply fixed inset-0 bg-black z-50;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .video-player-container {
+    @apply h-full w-full flex flex-col;
+  }
+
+  .video-grid {
+    @apply grid w-full h-[calc(100vh-48px)] p-0;
+  }
+
+  .video-grid.layout-1 {
+    @apply grid-cols-1;
+    padding: 0;
+    max-width: none;
+  }
+
+  .video-grid.layout-2 {
+    @apply grid-cols-1;
+    padding: 0;
+    gap: 1px;
+    max-width: none;
+  }
+
+  .video-grid.layout-3 {
+    @apply grid-cols-1;
+    padding: 0;
+    gap: 1px;
+    grid-template-rows: repeat(3, 1fr);
+    max-width: none;
+  }
+
+  .video-grid.layout-4 {
+    @apply grid-cols-1;
+    padding: 0;
+    gap: 1px;
+    grid-template-rows: repeat(4, 1fr);
+    max-width: none;
+  }
+
+  /* Landscape mode styles */
+  @media (orientation: landscape) {
+    .video-grid.layout-2 {
+      @apply grid-cols-2;
+      grid-template-rows: 1fr;
+    }
+
+    .video-grid.layout-3 {
+      @apply grid-cols-2;
+      grid-template-rows: repeat(2, 1fr);
+    }
+
+    .video-grid.layout-3 .video-container:first-child {
+      @apply col-span-2;
+    }
+
+    .video-grid.layout-4 {
+      @apply grid-cols-2;
+      grid-template-rows: repeat(2, 1fr);
+    }
+  }
+
+  /* Desktop styles */
+  @media (min-width: 1024px) {
+    .video-grid.layout-2 {
+      @apply grid-cols-2;
+      grid-template-rows: 1fr;
+    }
+
+    .video-grid.layout-3 {
+      @apply grid-cols-2;
+      grid-template-rows: repeat(2, 1fr);
+    }
+
+    .video-grid.layout-3 .video-container:first-child {
+      @apply col-span-2;
+    }
+
+    .video-grid.layout-4 {
+      @apply grid-cols-2;
+      grid-template-rows: repeat(2, 1fr);
+    }
+  }
+
+  .video-container {
+    @apply relative bg-black overflow-hidden;
+    height: 100%;
+  }
+
+  .video-frame {
+    @apply absolute inset-0 w-full h-full border-0;
+    z-index: 1;
+  }
+
+  .video-container:hover .video-frame {
+    z-index: 3;
+  }
+
+  .video-controls-overlay {
+    @apply absolute inset-0 flex flex-col justify-between p-4;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Custom styles for YouTube player */
+  .ytp-chrome-top,
+  .ytp-chrome-bottom,
+  .ytp-gradient-top,
+  .ytp-gradient-bottom,
+  .ytp-show-cards-title {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  .ytp-pause-overlay {
+    display: none !important;
+  }
+
+  .ytp-chrome-controls {
+    opacity: 1 !important;
+  }
+
+  .ytp-settings-button {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  .controls-top {
+    @apply flex items-start justify-between w-full;
+  }
+
+  .controls-right {
+    @apply flex items-center gap-2;
+  }
+
+  .live-indicator {
+    @apply flex items-center gap-2 px-3 py-1 bg-red-600 rounded-md text-white text-sm font-medium;
+  }
+
+  .live-dot {
+    @apply w-2 h-2 rounded-full bg-white animate-pulse;
+  }
+
+  .control-button {
+    @apply flex items-center gap-2 px-3 py-1.5 rounded-md bg-black/70 text-white hover:bg-black/90 
+           transition-all duration-300 backdrop-blur-sm text-sm;
+  }
+
+  .controls-bottom {
+    @apply space-y-2;
+  }
+
+  .progress-bar {
+    @apply w-full h-1 bg-gray-600/50 rounded-full overflow-hidden;
+  }
+
+  .progress-bar-live {
+    @apply h-full w-full bg-red-600;
+    animation: progress-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes progress-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .bottom-controls {
+    @apply flex items-center justify-between;
+  }
+
+  .left-controls {
+    @apply flex items-center gap-2;
+  }
+
+  .chat-toggle-button {
+    @apply absolute top-2 right-2 p-2 rounded-full bg-black/70 text-white
+           hover:bg-black/90 transition-all duration-300 backdrop-blur-sm
+           transform hover:scale-105 z-10;
+  }
+
+  .live-chat-button {
+    @apply absolute top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-full 
+           text-white text-sm font-medium z-10 transition-all duration-300;
+    background: rgba(28, 28, 28, 0.9);
+  }
+
+  .live-chat-button:hover {
+    background: rgba(40, 40, 40, 0.9);
+  }
+
+  .live-chat-button span {
+    @apply ml-1;
+  }
+
+  .chat-overlay {
+    @apply absolute top-0 right-0 w-96 h-full flex flex-col z-30 transform transition-all duration-300;
+    background: transparent !important;
+  }
+
+  .chat-header {
+    @apply flex flex-col px-4 py-3;
+    background: transparent !important;
+    border-bottom: none;
+  }
+
+  .chat-header-content {
+    @apply flex items-center justify-between;
+  }
+
+  .chat-title {
+    @apply text-white text-base font-medium;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .chat-options {
+    @apply flex items-center mt-2 gap-2;
+  }
+
+  .chat-option {
+    @apply text-sm text-white/80 hover:text-white transition-colors py-1.5 px-3 relative;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .chat-option.active {
+    @apply text-white;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+  }
+
+  .close-chat-button {
+    @apply p-2 rounded-full text-white/80 hover:text-white
+           transition-all duration-300;
+    background: transparent;
+  }
+
+  .close-chat-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .chat-frame {
+    @apply w-full h-full;
+    background: transparent !important;
+  }
+
+  .chat-frame iframe {
+    background: transparent !important;
+    width: 100% !important;
+    height: calc(100% - 80px) !important;
+  }
+
+  /* Style overrides for YouTube chat */
+  #item-list.yt-live-chat-renderer,
+  yt-live-chat-renderer,
+  #chat-messages.yt-live-chat-renderer,
+  #chat {
+    background: transparent !important;
+  }
+
+  /* Mobile chat optimizations */
+  @media (max-width: 768px) {
+    .chat-overlay {
+      @apply w-full h-1/2 bottom-0 top-auto;
+      background: rgba(28, 28, 28, 0.95) !important;
+    }
+
+    /* Adjust video container when chat is open */
+    .video-container:has(.chat-overlay) {
+      @apply h-1/2;
+    }
+  }
+
+  /* Landscape mode chat optimizations */
+  @media (orientation: landscape) and (max-width: 1024px) {
+    .chat-overlay {
+      @apply w-96 h-full top-0 bottom-auto border-l border-t-0;
+    }
+
+    .video-container:has(.chat-overlay) {
+      @apply h-full;
+    }
+  }
+
+  .back-button-container {
+    @apply fixed bottom-0 left-0 right-0 text-center py-2 bg-black/90;
+    height: 48px;
+  }
+
+  .back-button {
+    @apply px-6 py-1.5 rounded-full bg-white text-black hover:bg-gray-200 transition-all duration-300 
+           font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 text-sm;
+  }
+
+  .page-container {
+    @apply min-h-screen text-white px-4 sm:px-6 md:px-8 py-8 md:py-12;
+  }
+
+  .content-container {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .header {
+    @apply text-center mb-8 bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-700/50;
+  }
+
+  .logo-container {
+    @apply flex justify-center mb-4;
+  }
+
+  .app-logo {
+    @apply w-16 h-16 md:w-20 md:h-20 animate-float;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .header-title {
+    @apply text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text;
+  }
+
+  .header-subtitle {
+    @apply text-lg md:text-xl text-gray-300 mb-8;
+  }
+
+  .main-content {
+    @apply flex flex-col md:flex-row gap-8 items-start;
+  }
+
+  .instructions-section {
+    @apply w-full md:w-2/5 sticky top-4;
+  }
+
+  .input-section {
+    @apply w-full md:w-3/5;
+  }
+
+  .instructions {
+    @apply text-left bg-gray-800/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-700/50 
+           transform transition-all duration-300 hover:shadow-2xl;
+  }
+
+  .instructions-title {
+    @apply text-xl font-semibold mb-4 text-blue-400;
+  }
+
+  .instructions-list {
+    @apply space-y-4 list-decimal list-inside mb-6;
+  }
+
+  .instructions-list li {
+    @apply text-gray-200 pl-2;
+  }
+
+  .inline-icon {
+    @apply inline-block align-text-bottom mx-1 text-blue-400;
+  }
+
+  .instructions-note {
+    @apply text-sm text-gray-300 bg-gray-700/50 p-4 rounded-xl border border-gray-600/50;
+  }
+
+  .input-container {
+    @apply space-y-4 bg-gray-800/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-700/50;
+  }
+
+  .input-row {
+    @apply flex gap-3 items-center animate-fadeIn;
+  }
+
+  .url-input {
+    @apply flex-1 px-4 py-3 rounded-xl bg-gray-700/70 text-white placeholder-gray-400 
+           focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-gray-700/90
+           border border-gray-600/50 transition-all duration-300
+           text-sm md:text-base backdrop-blur-sm;
+  }
+
+  .remove-button {
+    @apply p-2 rounded-xl bg-red-500/80 hover:bg-red-600 transition-all duration-300 
+           transform hover:scale-105 hover:shadow-lg text-white/90 backdrop-blur-sm;
+  }
+
+  .button-container {
+    @apply flex flex-col sm:flex-row gap-4 justify-center mt-8 items-center;
+  }
+
+  .add-button {
+    @apply flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600/90 hover:bg-blue-700 
+           transition-all duration-300 transform hover:scale-105 hover:shadow-lg
+           text-white/90 backdrop-blur-sm w-full sm:w-auto justify-center;
+  }
+
+  .play-button {
+    @apply flex items-center gap-2 px-6 py-3 rounded-xl bg-green-600/90 hover:bg-green-700 
+           transition-all duration-300 transform hover:scale-105 hover:shadow-lg
+           text-white/90 backdrop-blur-sm w-full sm:w-auto justify-center
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100;
+  }
+
+  .play-button:disabled {
+    @apply hover:bg-green-600/90 hover:shadow-none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  .header {
+    @apply p-4 mb-4;
+  }
+
+  .instructions {
+    @apply p-4 mb-4;
+  }
+
+  .input-container {
+    @apply p-4;
+  }
+
+  .main-content {
+    @apply gap-4;
+  }
+
+  .input-row {
+    @apply flex flex-row gap-2 items-center;
+  }
+
+  .url-input {
+    @apply flex-1;
+  }
+
+  .remove-button {
+    @apply p-2 min-w-[40px] aspect-square flex items-center justify-center;
+  }
+
+  .button-container {
+    @apply space-y-3;
+  }
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} 

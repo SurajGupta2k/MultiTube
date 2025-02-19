@@ -1,70 +1,146 @@
-# Getting Started with Create React App
+# MultiTube - Watch Multiple YouTube Videos Simultaneously
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![MultiTube Logo](/public/logo.svg)
 
-## Available Scripts
+MultiTube is a React-based web application that solves a common limitation in web browsers - the inability to play multiple YouTube videos with audio simultaneously. While most browsers and devices restrict multiple video playback with audio, MultiTube overcomes this limitation, allowing users to watch and listen to multiple YouTube videos at the same time.
 
-In the project directory, you can run:
+## Why MultiTube?
 
-### `npm start`
+Traditional web browsers and YouTube's interface have limitations:
+- Most browsers block automatic playback of multiple videos with audio
+- Mobile devices typically restrict background video playback and multi-video audio
+- YouTube's native interface doesn't support watching multiple videos simultaneously
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+MultiTube addresses these challenges by:
+- Enabling simultaneous playback of multiple YouTube videos with audio
+- Supporting up to 4 videos on desktop and 2 on mobile devices
+- Providing individual audio controls for each video
+- Maintaining synchronized playback across all videos
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This makes it perfect for:
+- Comparing multiple versions of the same content
+- Following multiple live streams simultaneously
+- Creating your own multi-view experience
+- Music mixing or video comparison
+- Educational purposes where multiple video sources need to be watched together
 
-### `npm test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Watch up to 4 YouTube videos simultaneously (2 on mobile devices)
+- Responsive grid layout that adapts to the number of active videos
+- Live chat support for each video
+- Video controls including settings, fullscreen, and volume
+- Simple and intuitive URL input interface
+- Supports both youtube.com and youtu.be URL formats
+- Mobile-responsive design
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js (v14 or higher)
+- npm or yarn package manager
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation
 
-### `npm run eject`
+1. Clone the repository:
+```bash
+git clone [your-repository-url]
+cd youtube-multi-player
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Start the development server:
+```bash
+npm start
+# or
+yarn start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to use the application.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Usage
 
-## Learn More
+1. Enter YouTube URLs in the input fields
+2. Add more videos using the "+" button (up to 4 videos on desktop, 2 on mobile)
+3. Remove unwanted videos using the trash icon
+4. Click "Play All" to start watching
+5. Toggle live chat for each video using the chat icon
+6. Use video controls for settings, fullscreen, and volume
+7. Return to URL input using the "Back to URL Input" button
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Project Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+youtube-multi-player/
+├── public/
+│   ├── index.html
+│   ├── logo.svg
+│   └── manifest.json
+├── src/
+│   ├── components/
+│   ├── App.js          # Main application component
+│   ├── index.js        # Application entry point
+│   ├── index.css       # Global styles
+│   └── reportWebVitals.js
+└── package.json
+```
 
-### Code Splitting
+### Key Files
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- `src/App.js`: Main application component containing core functionality
+- `src/index.js`: Application entry point and React initialization
+- `src/index.css`: Global styles and layout definitions
 
-### Analyzing the Bundle Size
+## Supported URL Formats
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+MultiTube supports the following YouTube URL formats:
+- `https://www.youtube.com/watch?v=VIDEO_ID`
+- `https://youtu.be/VIDEO_ID`
 
-### Making a Progressive Web App
+## Features in Detail
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Video Grid Layout
+- Dynamic grid system that adjusts based on the number of active videos
+- Responsive design that adapts to different screen sizes
+- Maximum of 4 videos on desktop and 2 on mobile devices
 
-### Advanced Configuration
+### Live Chat Integration
+- Native YouTube live chat integration for each video
+- Toggle between live chat and top chat modes
+- Collapsible chat interface
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Video Controls
+- Individual controls for each video
+- Settings management
+- Fullscreen capability
+- Volume control
+- Hover-activated control overlay
 
-### Deployment
+## Browser Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+MultiTube works on all modern browsers including:
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
 
-### `npm run build` fails to minify
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Built with React
+- Uses YouTube iFrame API
+- Icons provided by Lucide React
