@@ -46,7 +46,7 @@ This makes it perfect for:
 1. Clone the repository:
 ```bash
 git clone https://github.com/SurajGupta2k/MultiTube.git
-cd youtube-multi-player
+cd MultiTube
 ```
 
 2. Install dependencies:
@@ -78,7 +78,7 @@ yarn start
 ## Project Structure
 
 ```
-youtube-multi-player/
+MultiTube/
 ├── public/
 │   ├── index.html
 │   ├── logo.svg
