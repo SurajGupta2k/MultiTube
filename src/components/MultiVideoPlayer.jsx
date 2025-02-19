@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoInput from './VideoInput';
 import VideoGrid from './VideoGrid';
+import adguardConfig from '../utils/adguard';
 
 // This component manages multiple YouTube video players
 const MultiVideoPlayer = () => {
@@ -8,6 +9,11 @@ const MultiVideoPlayer = () => {
   const [videoUrls, setVideoUrls] = useState([]); // Array of YouTube video IDs
   const [isPlaying, setIsPlaying] = useState(false); // Controls synchronized playback
   const [error, setError] = useState(''); // Stores error messages
+
+  // Initialize AdGuard when component mounts
+  useEffect(() => {
+    adguardConfig.init();
+  }, []);
 
   // Handles adding a new video URL
   const handleAddVideo = (url) => {

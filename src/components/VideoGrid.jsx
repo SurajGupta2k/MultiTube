@@ -83,7 +83,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     }
 
     try {
-      // Configure player options
+      // Configure player options with AdGuard proxy
       const playerConfig = {
         height: '200',
         width: '356',
@@ -103,18 +103,23 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
           disablekb: 0,
           color: 'white',
           autohide: 0,
-          controls: 2 // Force showing controls
+          controls: 2,
+          host: 'https://www.youtube-nocookie.com', // Use privacy-enhanced mode
+          widget_referrer: window.location.origin,
         },
         events: {
           onReady: (event) => {
             console.log('Player ready:', videoId);
-            // Customize player appearance
+            // Customize player appearance and inject AdGuard
             const iframe = event.target.getIframe();
             const css = `
               .ytp-chrome-top,
               .ytp-show-cards-title,
               .ytp-youtube-button,
-              .ytp-pip-button {
+              .ytp-pip-button,
+              .ytp-ad-overlay-container,
+              .ytp-ad-text-overlay,
+              .ytp-ad-skip-button-container {
                 display: none !important;
               }
               .ytp-settings-button {
@@ -130,13 +135,18 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
               }
             `;
             
-            // Inject custom styles
+            // Inject custom styles and AdGuard script
             try {
               const iframeDoc = iframe.contentWindow.document;
               const styleTag = iframeDoc.createElement('style');
               styleTag.type = 'text/css';
               styleTag.textContent = css;
               iframeDoc.head.appendChild(styleTag);
+
+              // Add AdGuard script
+              const adguardScript = iframeDoc.createElement('script');
+              adguardScript.src = 'https://cdn.adguard.com/public/Userscripts/AdguardAssistant/4.0/assistant.js';
+              iframeDoc.head.appendChild(adguardScript);
             } catch (e) {
               console.warn('Could not inject custom styles:', e);
             }
