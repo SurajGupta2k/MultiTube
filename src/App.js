@@ -47,23 +47,27 @@ function App() {
   // Extracts YouTube video ID from various URL formats
   const getVideoId = (url) => {
     if (!url) return null;
-    
+
     try {
       // Handle youtu.be format
       if (url.includes('youtu.be/')) {
         return url.split('youtu.be/')[1]?.split(/[#?]/)[0] || null;
       }
-      
+
       // Handle youtube.com format
       const urlObj = new URL(url);
       if (urlObj.hostname.includes('youtube.com')) {
+        // Check for live video format
+        if (urlObj.pathname.includes('/live/')) {
+          return urlObj.pathname.split('/live/')[1]?.split(/[#?]/)[0] || null;
+        }
         return urlObj.searchParams.get('v') || null;
       }
-      
+
       return null;
     } catch {
       // Fallback to regex if URL parsing fails
-      const match = url.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^"&?/\s]{11})/);
+      const match = url.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=|\/live\/))([^"&?/\s]{11})/);
       return match?.[1] || null;
     }
   };
@@ -244,6 +248,7 @@ function App() {
                           className="chat-frame"
                           frameBorder="0"
                           allowTransparency="true"
+                          title={`Live chat for video ${index + 1}`}
                         />
                       </div>
                     )}
