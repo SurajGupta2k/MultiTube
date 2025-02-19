@@ -1,6 +1,6 @@
 # MultiTube - Watch Multiple YouTube Videos Simultaneously
 
-![MultiTube Logo](/public/logo.svg)
+![MultiTube Logo](/public/logo192.png)
 
 MultiTube is a React-based web application that solves a common limitation in web browsers - the inability to play multiple YouTube videos with audio simultaneously. While most browsers and devices restrict multiple video playback with audio, MultiTube overcomes this limitation, allowing users to watch and listen to multiple YouTube videos at the same time.
 
@@ -45,8 +45,8 @@ This makes it perfect for:
 
 1. Clone the repository:
 ```bash
-git clone [your-repository-url]
-cd youtube-multi-player
+git clone https://github.com/SurajGupta2k/MultiTube.git
+cd MultiTube
 ```
 
 2. Install dependencies:
@@ -78,7 +78,7 @@ yarn start
 ## Project Structure
 
 ```
-youtube-multi-player/
+MultiTube/
 ├── public/
 │   ├── index.html
 │   ├── logo.svg
