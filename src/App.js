@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Play, MessageCircle, X, Settings, Maximize, Volume2 } from 'lucide-react';
 
+// This is the main App component that manages the multi-video player functionality
 function App() {
-  const [videoUrls, setVideoUrls] = useState(['']);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [activeChatIndex, setActiveChatIndex] = useState(null);
-  const [showControls, setShowControls] = useState(null);
+  // State for managing video URLs, playback state, device type, chat visibility and controls
+  const [videoUrls, setVideoUrls] = useState(['']); // Array of video URLs, initialized with one empty string
+  const [isPlaying, setIsPlaying] = useState(false); // Controls whether videos are playing
+  const [isMobile, setIsMobile] = useState(false); // Tracks if user is on mobile device
+  const [activeChatIndex, setActiveChatIndex] = useState(null); // Index of video with active chat overlay
+  const [showControls, setShowControls] = useState(null); // Index of video showing controls overlay
 
+  // Effect to detect mobile devices and handle window resizing
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 768); // Set mobile mode if width < 768px
     };
     
     checkMobile();
@@ -18,25 +21,30 @@ function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Maximum number of videos allowed (2 for mobile, 4 for desktop)
   const maxVideos = isMobile ? 2 : 4;
 
+  // Adds a new empty video input field
   const addVideoInput = () => {
     if (videoUrls.length < maxVideos) {
       setVideoUrls([...videoUrls, '']);
     }
   };
 
+  // Removes a video input at specified index
   const removeVideoInput = (index) => {
     const newUrls = videoUrls.filter((_, i) => i !== index);
-    setVideoUrls(newUrls.length ? newUrls : ['']);
+    setVideoUrls(newUrls.length ? newUrls : ['']); // Keep at least one input
   };
 
+  // Updates video URL at specified index
   const updateVideoUrl = (index, url) => {
     const newUrls = [...videoUrls];
     newUrls[index] = url;
     setVideoUrls(newUrls);
   };
 
+  // Extracts YouTube video ID from various URL formats
   const getVideoId = (url) => {
     if (!url) return null;
     
@@ -60,19 +68,23 @@ function App() {
     }
   };
 
+  // Starts playback of all videos
   const playAll = () => {
     setIsPlaying(true);
   };
 
+  // Determines CSS class for video grid layout based on number of valid videos
   const getGridClassName = () => {
     const validVideos = videoUrls.filter(url => getVideoId(url)).length;
     return `layout-${validVideos}`;
   };
 
+  // Toggles chat overlay for video at specified index
   const toggleChat = (index) => {
     setActiveChatIndex(activeChatIndex === index ? null : index);
   };
 
+  // Toggles controls overlay for video at specified index
   const toggleControls = (index) => {
     setShowControls(showControls === index ? null : index);
   };
@@ -80,6 +92,7 @@ function App() {
   return (
     <div className="page-container">
       {!isPlaying ? (
+        // URL Input Mode
         <div className="content-container">
           <header className="header">
             <div className="logo-container">
@@ -155,6 +168,7 @@ function App() {
           </div>
         </div>
       ) : (
+        // Video Player Mode
         <div className="video-player-mode">
           <div className="video-player-container">
             <div className={`video-grid ${getGridClassName()}`}>
@@ -169,6 +183,7 @@ function App() {
                     onMouseEnter={() => toggleControls(index)}
                     onMouseLeave={() => toggleControls(null)}
                   >
+                    {/* YouTube Video Player */}
                     <iframe
                       title={`YouTube video ${index + 1}`}
                       src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&showinfo=1&rel=0&enablejsapi=1&widgetid=1&liveChatId=all`}
@@ -177,10 +192,12 @@ function App() {
                       allowFullScreen
                       className="video-frame"
                     />
+                    {/* Live Chat Button */}
                     <button className="live-chat-button" onClick={() => toggleChat(index)}>
                       <MessageCircle size={20} />
                       <span>Live chat</span>
                     </button>
+                    {/* Video Controls Overlay */}
                     {showControls === index && (
                       <div className="video-controls-overlay">
                         <div className="controls-top">
@@ -207,6 +224,7 @@ function App() {
                         </div>
                       </div>
                     )}
+                    {/* Live Chat Overlay */}
                     {activeChatIndex === index && (
                       <div className="chat-overlay">
                         <div className="chat-header">
@@ -246,4 +264,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

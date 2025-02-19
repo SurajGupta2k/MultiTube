@@ -1,18 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+// This component displays a grid of YouTube video players
 const VideoGrid = ({ videoIds, isPlaying }) => {
+  // Refs to store YouTube player instances
   const playerRefs = useRef({});
+  // Track if YouTube API is loaded and ready
   const [apiReady, setApiReady] = useState(false);
+  // Control whether to show video players or just URLs
   const [showPlayers, setShowPlayers] = useState(false);
 
+  // Load YouTube IFrame API on component mount
   useEffect(() => {
     // Load the IFrame Player API code asynchronously
     const loadYouTubeAPI = () => {
+      // Avoid loading API script multiple times
       const existingScript = document.getElementById('youtube-api');
-      if (existingScript) {
-        return;
-      }
+      if (existingScript) return;
 
+      // Create and insert YouTube API script
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       tag.id = 'youtube-api';
@@ -21,18 +26,18 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     };
 
     if (!window.YT) {
-      // If YT is not available, load the API
+      // Load API if not available
       loadYouTubeAPI();
       window.onYouTubeIframeAPIReady = () => {
         setApiReady(true);
       };
     } else if (window.YT && window.YT.Player) {
-      // If YT is already available, set API as ready
+      // API already loaded
       setApiReady(true);
     }
 
+    // Cleanup players on unmount
     return () => {
-      // Cleanup players when component unmounts
       Object.values(playerRefs.current).forEach(player => {
         if (player && typeof player.destroy === 'function') {
           player.destroy();
@@ -41,12 +46,14 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     };
   }, []);
 
+  // Show players when play is triggered
   useEffect(() => {
     if (isPlaying && !showPlayers) {
       setShowPlayers(true);
     }
   }, [isPlaying]);
 
+  // Create players when needed
   useEffect(() => {
     if (showPlayers && apiReady) {
       videoIds.forEach((videoId) => {
@@ -57,6 +64,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     }
   }, [videoIds, apiReady, showPlayers]);
 
+  // Synchronize video playback
   useEffect(() => {
     if (isPlaying && apiReady && showPlayers) {
       Object.values(playerRefs.current).forEach(player => {
@@ -67,6 +75,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     }
   }, [isPlaying, apiReady, showPlayers]);
 
+  // Create a new YouTube player instance
   const createPlayer = (videoId) => {
     if (!window.YT || !window.YT.Player) {
       console.error('YouTube API not ready');
@@ -74,6 +83,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     }
 
     try {
+      // Configure player options
       const playerConfig = {
         height: '200',
         width: '356',
@@ -98,7 +108,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
         events: {
           onReady: (event) => {
             console.log('Player ready:', videoId);
-            // Add custom CSS to hide specific elements and show settings
+            // Customize player appearance
             const iframe = event.target.getIframe();
             const css = `
               .ytp-chrome-top,
@@ -120,7 +130,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
               }
             `;
             
-            // Inject CSS into the iframe
+            // Inject custom styles
             try {
               const iframeDoc = iframe.contentWindow.document;
               const styleTag = iframeDoc.createElement('style');
@@ -137,6 +147,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
         }
       };
 
+      // Create player instance
       const playerElement = document.getElementById(`player-${videoId}`);
       if (playerElement) {
         playerRefs.current[videoId] = new window.YT.Player(`player-${videoId}`, playerConfig);
@@ -146,6 +157,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     }
   };
 
+  // Show list of video URLs before playing
   if (!showPlayers) {
     return (
       <div className="space-y-4 max-w-2xl mx-auto mt-6">
@@ -163,6 +175,7 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
     );
   }
 
+  // Show grid of video players
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
       {videoIds.map((videoId) => (
@@ -174,4 +187,4 @@ const VideoGrid = ({ videoIds, isPlaying }) => {
   );
 };
 
-export default VideoGrid; 
+export default VideoGrid;
