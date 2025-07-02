@@ -248,19 +248,12 @@ function App() {
                           className="chat-frame"
                           frameBorder="0"
                           allowTransparency="true"
-                          title={`Live chat for video ${index + 1}`}
-                        />
+                        ></iframe>
                       </div>
                     )}
                   </div>
                 );
               })}
-            </div>
-            
-            <div className="back-button-container">
-              <button onClick={() => setIsPlaying(false)} className="back-button">
-                Back to URL Input
-              </button>
             </div>
           </div>
         </div>

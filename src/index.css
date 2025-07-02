@@ -20,7 +20,7 @@
   }
 
   .video-grid {
-    @apply grid w-full h-[calc(100vh-48px)] p-0;
+    @apply grid w-full h-full p-0;
   }
 
   .video-grid.layout-1 {
@@ -32,14 +32,14 @@
   .video-grid.layout-2 {
     @apply grid-cols-1;
     padding: 0;
-    gap: 1px;
+    gap: 0;
     max-width: none;
   }
 
   .video-grid.layout-3 {
     @apply grid-cols-1;
     padding: 0;
-    gap: 1px;
+    gap: 0;
     grid-template-rows: repeat(3, 1fr);
     max-width: none;
   }
@@ -47,7 +47,7 @@
   .video-grid.layout-4 {
     @apply grid-cols-1;
     padding: 0;
-    gap: 1px;
+    gap: 0;
     grid-template-rows: repeat(4, 1fr);
     max-width: none;
   }
@@ -214,13 +214,13 @@
 
   .chat-overlay {
     @apply absolute top-0 right-0 w-96 h-full flex flex-col z-30 transform transition-all duration-300;
-    background: transparent !important;
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(4px);
   }
 
   .chat-header {
     @apply flex flex-col px-4 py-3;
-    background: transparent !important;
-    border-bottom: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .chat-header-content {
@@ -229,7 +229,6 @@
 
   .chat-title {
     @apply text-white text-base font-medium;
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
   }
 
   .chat-options {
@@ -238,7 +237,6 @@
 
   .chat-option {
     @apply text-sm text-white/80 hover:text-white transition-colors py-1.5 px-3 relative;
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
     background: transparent;
     border: none;
     cursor: pointer;
