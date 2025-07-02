@@ -7,8 +7,9 @@ function App() {
   const [videoUrls, setVideoUrls] = useState(['']); // Array of video URLs, initialized with one empty string
   const [isPlaying, setIsPlaying] = useState(false); // Controls whether videos are playing
   const [isMobile, setIsMobile] = useState(false); // Tracks if user is on mobile device
-  const [activeChatIndex, setActiveChatIndex] = useState(null); // Index of video with active chat overlay
+  const [activeChatIndices, setActiveChatIndices] = useState([]); // Indices of videos with active chat overlays
   const [showControls, setShowControls] = useState(null); // Index of video showing controls overlay
+  const [showChatButtons, setShowChatButtons] = useState(true); // Toggles live chat button visibility
 
   // Effect to detect mobile devices and handle window resizing
   useEffect(() => {
@@ -85,7 +86,11 @@ function App() {
 
   // Toggles chat overlay for video at specified index
   const toggleChat = (index) => {
-    setActiveChatIndex(activeChatIndex === index ? null : index);
+    setActiveChatIndices(prevIndices =>
+      prevIndices.includes(index)
+        ? prevIndices.filter(i => i !== index)
+        : [...prevIndices, index]
+    );
   };
 
   // Toggles controls overlay for video at specified index
@@ -148,6 +153,18 @@ function App() {
                   </div>
                 ))}
                 
+                <div className="settings-container">
+                  <label className="settings-label">
+                    <input
+                      type="checkbox"
+                      checked={showChatButtons}
+                      onChange={() => setShowChatButtons(prev => !prev)}
+                      className="settings-checkbox"
+                    />
+                    Show Live Chat Buttons
+                  </label>
+                </div>
+                
                 <div className="button-container">
                   {videoUrls.length < maxVideos && (
                     <button
@@ -197,10 +214,12 @@ function App() {
                       className="video-frame"
                     />
                     {/* Live Chat Button */}
-                    <button className="live-chat-button" onClick={() => toggleChat(index)}>
-                      <MessageCircle size={20} />
-                      <span>Live chat</span>
-                    </button>
+                    {showChatButtons && (
+                      <button className="live-chat-button" onClick={() => toggleChat(index)}>
+                        <MessageCircle size={20} />
+                        <span>Live chat</span>
+                      </button>
+                    )}
                     {/* Video Controls Overlay */}
                     {showControls === index && (
                       <div className="video-controls-overlay">
@@ -229,12 +248,12 @@ function App() {
                       </div>
                     )}
                     {/* Live Chat Overlay */}
-                    {activeChatIndex === index && (
+                    {activeChatIndices.includes(index) && (
                       <div className="chat-overlay">
                         <div className="chat-header">
                           <div className="chat-header-content">
                             <span className="chat-title">Live Chat</span>
-                            <button onClick={() => setActiveChatIndex(null)} className="close-chat-button">
+                            <button onClick={() => toggleChat(index)} className="close-chat-button">
                               <X size={16} />
                             </button>
                           </div>
